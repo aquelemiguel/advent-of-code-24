@@ -16,7 +16,6 @@ export function p1(a: number[], b: number[]): number {
 
 function p2(a: number[], b: number[]): number {
   const occ: Record<number, number> = {};
-
   return a.reduce((acc, val) => {
     occ[val] ??= b.reduce((acc, curr) => (curr === val ? acc + 1 : acc), 0);
     return acc + val * occ[val];
