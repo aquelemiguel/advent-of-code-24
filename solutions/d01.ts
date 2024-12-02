@@ -1,4 +1,4 @@
-const input = Deno.readTextFileSync("./input/d1.in");
+const input = Deno.readTextFileSync("./input/d01.in");
 
 const a: number[] = [];
 const b: number[] = [];
