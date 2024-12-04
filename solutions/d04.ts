@@ -1,78 +1,55 @@
-const dirs = [
-  [-1, -1],
-  [0, -1],
-  [1, -1],
-  [-1, 0],
-  [1, 0],
-  [-1, 1],
-  [0, 1],
-  [1, 1]
-];
-
 function parse(input: string): string[][] {
-  return input.split("\n").map((line) => line.split(""));
-}
-
-function getLetter(grid: string[][], x: number, y: number): string | undefined {
-  if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
-    return grid[x][y];
-  }
+  return [
+    [],
+    ...input.split("\n").map((line) => ["", ...line.split(""), ""]),
+    []
+  ];
 }
 
 function search(
-  grid: string[][],
+  soup: string[][],
+  word: string,
   x: number,
   y: number,
   stage: number,
-  dir: number
+  [dx, dy]: number[]
 ): boolean {
-  if (stage >= "XMAS".length) {
-    return true;
-  }
-  const [nx, ny] = [x + dirs[dir][0], y + dirs[dir][1]];
-  if (getLetter(grid, nx, ny) === "XMAS"[stage]) {
-    return search(grid, x + dirs[dir][0], y + dirs[dir][1], stage + 1, dir);
-  }
-  return false;
+  return (
+    stage >= word.length ||
+    (soup[x + dx][y + dy] === word[stage] &&
+      search(soup, word, x + dx, y + dy, stage + 1, [dx, dy]))
+  );
 }
 
 export function p1(input: string): number {
-  const grid = parse(input);
-
-  let x = 0;
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] === "XMAS"[0]) {
-        for (let d = 0; d < dirs.length; d++) {
-          x += search(grid, i, j, 1, d) ? 1 : 0;
-        }
-      }
-    }
-  }
-  return x;
+  const neighbours = [-1, 0, 1].flatMap((dx) =>
+    [-1, 0, 1].map((dy) => [dx, dy]).filter(([dx, dy]) => dx !== 0 || dy !== 0)
+  );
+  const soup = parse(input);
+  return soup
+    .flatMap((row, i) =>
+      row.flatMap((cell, j) =>
+        cell === "X"
+          ? neighbours.filter(([dx, dy]) =>
+              search(soup, "XMAS", i, j, 1, [dx, dy])
+            ).length
+          : 0
+      )
+    )
+    .reduce((acc, val) => acc + val, 0);
 }
 
 export function p2(input: string): number {
-  const grid = parse(input);
-  let x = 0;
+  const isDiagonal = (edges: [string?, string?]): boolean =>
+    ["MS", "SM"].includes(edges.join(""));
 
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] === "A") {
-        const a = [
-          getLetter(grid, i - 1, j - 1),
-          getLetter(grid, i + 1, j + 1)
-        ].join("");
-        const b = [
-          getLetter(grid, i - 1, j + 1),
-          getLetter(grid, i + 1, j - 1)
-        ].join("");
-
-        if ((a === "MS" || a === "SM") && (b === "MS" || b === "SM")) {
-          x += 1;
-        }
-      }
-    }
-  }
-  return x;
+  const soup = parse(input);
+  return soup.flatMap((row, i) =>
+    row.filter(
+      (cell, j) =>
+        cell === "A" &&
+        isDiagonal([soup[i - 1][j - 1], soup[i + 1][j + 1]]) &&
+        isDiagonal([soup[i - 1][j + 1], soup[i + 1][j - 1]])
+    )
+  ).length;
 }
