@@ -5,66 +5,55 @@ function parse(input: string): string[][] {
   return [Array(arr.length).fill(""), ...arr, Array(arr.length).fill("")];
 }
 
+function _search(
+  soup: string[][],
+  word: string,
+  [x, y]: number[],
+  [dx, dy]: number[],
+  vis = [[x, y]]
+): number[][] {
+  if (word.length === 1) {
+    return vis;
+  }
+  if (soup[x + dx][y + dy] !== word[1]) {
+    return [];
+  }
+  return _search(
+    soup,
+    word.slice(1),
+    [x + dx, y + dy],
+    [dx, dy],
+    [...vis, [x + dx, y + dy]]
+  );
+}
+
 function search(
   soup: string[][],
   word: string,
-  x: number,
-  y: number,
-  stage: number,
-  [dx, dy]: number[],
-  visited = [[x, y]]
-): number[][] {
-  if (visited.length === word.length) {
-    return visited;
-  }
-  if (soup[x + dx][y + dy] === word[stage]) {
-    return search(
-      soup,
-      word,
-      x + dx,
-      y + dy,
-      stage + 1,
-      [dx, dy],
-      [...visited, [x + dx, y + dy]]
-    );
-  }
-  return [];
+  pattern: number[][]
+): number[][][] {
+  return soup.flatMap((row, i) =>
+    row.flatMap((cell, j) =>
+      cell === word[0]
+        ? pattern
+            .map((dir) => _search(soup, word, [i, j], dir))
+            .filter((res) => res.length > 0)
+        : []
+    )
+  );
 }
 
 export function p1(input: string): number {
   const pattern = [-1, 0, 1].flatMap((dx) =>
     [-1, 0, 1].map((dy) => [dx, dy]).filter(([dx, dy]) => dx !== 0 || dy !== 0)
   );
-  const soup = parse(input);
-  return soup.flatMap((row, i) =>
-    row.flatMap((cell, j) =>
-      cell === "X"
-        ? pattern
-            .map((dir) => search(soup, "XMAS", i, j, 1, dir))
-            .filter((res) => res.length !== 0)
-        : []
-    )
-  ).length;
+  return search(parse(input), "XMAS", pattern).length;
 }
 
 export function p2(input: string): number {
-  const pattern = [
-    [-1, -1],
-    [-1, 1],
-    [1, -1],
-    [1, 1]
-  ];
-  const soup = parse(input);
-  const res = soup.flatMap((row, i) =>
-    row.flatMap((cell, j) =>
-      cell === "M"
-        ? pattern
-            .map((dir) => search(soup, "MAS", i, j, 1, dir))
-            .filter((res) => res.length !== 0)
-        : []
-    )
-  );
-  return Object.values(_.countBy(res, (r) => r[1].join(" "))).filter(
-    (v) => v === 2
-  ).length;
+  const pattern = [-1, 1].flatMap((dx) => [-1, 1].map((dy) => [dx, dy]));
+  const words = search(parse(input), "MAS", pattern);
+
+  const centers = _.countBy(words, ([_, center]) => center.join(" "));
+  return Object.values(centers).filter((count) => count === 2).length;
 }
