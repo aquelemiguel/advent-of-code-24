@@ -1,67 +1,42 @@
 import * as _ from "jsr:@es-toolkit/es-toolkit";
 
-function parse(input: string): {
-  rules: Map<string, Set<string>>;
-  updates: string[][];
-} {
+function parse(input: string) {
   const [rawRules, rawUpdates] = input.split("\n\n");
   const rules = new Map<string, Set<string>>();
+  const updates = rawUpdates.split("\n").map((line) => line.split(","));
 
-  rawRules
-    .split("\n")
-    .map((rule) => rule.split("|"))
-    .forEach(([a, b]) => {
-      rules.set(a, rules.get(a)?.add(b) || new Set([b]));
-    });
-
-  return {
-    rules,
-    updates: rawUpdates
-      .trim()
-      .split("\n")
-      .map((update) => update.split(","))
-  };
-}
-
-function sort(rules: Map<string, Set<string>>, update: string[]): string[] {
-  return update.slice().sort((a, b) => {
-    if (rules.get(a)?.has(b)) {
-      return -1;
-    }
-    if (rules.get(b)?.has(a)) {
-      return 1;
-    }
-    return 0;
+  rawRules.split("\n").forEach((rule) => {
+    const [a, b] = rule.split("|");
+    rules.set(a, rules.get(a)?.add(b) || new Set([b]));
   });
+  return { rules, updates };
 }
 
-function print(
-  rules: Map<string, Set<string>>,
-  updates: string[][]
-): { correct: string[][]; incorrect: string[][] } {
-  return _.groupBy(updates, (update) => {
-    const sorted = sort(rules, update);
-    return _.isEqual(sorted, update) ? "correct" : "incorrect";
-  });
+function sort(rules: Map<string, Set<string>>, update: string[]) {
+  return [...update].sort((a, b) => (rules.get(a)?.has(b) ? -1 : 1));
 }
 
-function sumMiddlePages(updates: string[][]): number {
-  return updates
-    .map((update) => Number(update[Math.floor(update.length / 2)]))
-    .reduce((acc, val) => acc + val, 0);
+function classify(rules: Map<string, Set<string>>, updates: string[][]) {
+  return _.groupBy(updates, (update) =>
+    _.isEqual(sort(rules, update), update) ? "right" : "wrong"
+  );
 }
 
-function p1(input: string): number {
+function sumMiddle(updates: string[][]) {
+  return _.sum(updates.map((update) => Number(update[update.length >> 1])));
+}
+
+function p1(input: string) {
   const { rules, updates } = parse(input);
-  const { correct } = print(rules, updates);
-  return sumMiddlePages(correct);
+  const { right } = classify(rules, updates);
+  return sumMiddle(right);
 }
 
-function p2(input: string): number {
+function p2(input: string) {
   const { rules, updates } = parse(input);
-  const { incorrect } = print(rules, updates);
-  const sorted = incorrect.map((update) => sort(rules, update));
-  return sumMiddlePages(sorted);
+  const { wrong } = classify(rules, updates);
+  const sorted = wrong.map((update) => sort(rules, update));
+  return sumMiddle(sorted);
 }
 
 export { p1, p2 };
