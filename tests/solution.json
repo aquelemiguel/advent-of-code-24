@@ -1,0 +1,68 @@
+{
+  "d01": {
+    "title": "Day 1: Historian Hysteria",
+    "example": {
+      "p1": 11,
+      "p2": 31
+    },
+    "custom": {
+      "p1": 1879048,
+      "p2": 21024792
+    }
+  },
+  "d02": {
+    "title": "Day 2: Red-Nosed Reports",
+    "example": {
+      "p1": 2,
+      "p2": 4
+    },
+    "custom": {
+      "p1": 321,
+      "p2": 386
+    }
+  },
+  "d03": {
+    "title": "Day 3: Mull It Over",
+    "example": {
+      "p1": 161,
+      "p2": 48
+    },
+    "custom": {
+      "p1": 162813399,
+      "p2": 53783319
+    }
+  },
+  "d04": {
+    "title": "Day 4: Ceres Search",
+    "example": {
+      "p1": 18,
+      "p2": 9
+    },
+    "custom": {
+      "p1": 2454,
+      "p2": 1858
+    }
+  },
+  "d05": {
+    "title": "Day 5: Print Queue",
+    "example": {
+      "p1": 143,
+      "p2": 123
+    },
+    "custom": {
+      "p1": 5639,
+      "p2": 5273
+    }
+  },
+  "d06": {
+    "title": "Day 6: Guard Gallivant",
+    "example": {
+      "p1": 41,
+      "p2": 6
+    },
+    "custom": {
+      "p1": 4826,
+      "p2": 1721
+    }
+  }
+}
