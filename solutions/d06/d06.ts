@@ -2,15 +2,12 @@ import * as _ from "jsr:@es-toolkit/es-toolkit";
 
 function parse(input: string) {
   let guard = [-1, -1];
-  const grid = input
-    .trim()
-    .split("\n")
-    .map((line, i) =>
-      line.split("").map((c, j) => {
-        if (c === "^") guard = [i, j];
-        return c;
-      })
-    );
+  const grid = input.split("\n").map((line, i) =>
+    line.split("").map((c, j) => {
+      if (c === "^") guard = [i, j];
+      return c;
+    })
+  );
   return { grid, guard };
 }
 

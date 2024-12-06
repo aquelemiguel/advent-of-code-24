@@ -1,14 +1,11 @@
 function parse(input: string): [number[], number[]] {
   const a: number[] = [];
   const b: number[] = [];
-  input
-    .trim()
-    .split("\n")
-    .forEach((line) => {
-      const [col1, col2] = line.split(/\s+/).map(Number);
-      a.push(col1);
-      b.push(col2);
-    });
+  input.split("\n").forEach((line) => {
+    const [col1, col2] = line.split(/\s+/).map(Number);
+    a.push(col1);
+    b.push(col2);
+  });
   return [a, b];
 }
 
