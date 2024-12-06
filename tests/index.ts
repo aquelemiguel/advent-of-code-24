@@ -1,7 +1,7 @@
 import { assertEquals } from "jsr:@std/assert";
 import { describe, it, beforeAll } from "jsr:@std/testing/bdd";
 
-import s from "./solution.json" with { type: "json" };
+import s from "./solutions.json" with { type: "json" };
 const solution = s as Solution;
 type Solution = {
   [key: string]: {
