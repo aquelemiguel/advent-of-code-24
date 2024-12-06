@@ -1,7 +1,7 @@
 import { assertEquals } from "jsr:@std/assert";
-import { p1, p2 } from "../solutions/d03.ts";
+import { p1, p2 } from "./d03.ts";
 
-const input = Deno.readTextFileSync("./input/d03.in");
+const input = Deno.readTextFileSync("./solutions/d03/d03.example");
 
 Deno.test("🎄 P1", () => {
   assertEquals(p1(input), 161);

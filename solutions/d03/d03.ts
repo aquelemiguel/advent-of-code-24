@@ -2,7 +2,7 @@ function parse(input: string): string[][] {
   return [
     ...input
       .matchAll(/mul\((\d+),(\d+)\)|(do\(\))|(don't\(\))/g)
-      .map(([cmd, a, b]) => [cmd.replace(/\(.*\)/, ""), a, b]),
+      .map(([cmd, a, b]) => [cmd.replace(/\(.*\)/, ""), a, b])
   ];
 }
 
