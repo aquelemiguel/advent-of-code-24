@@ -1,9 +1,9 @@
 import { assertEquals } from "jsr:@std/assert";
 import { describe, it } from "jsr:@std/testing/bdd";
-import { p1, p2 } from "../solutions/d05/d05.ts";
-import { readInputFiles, Solution } from "./index.ts";
+import { p1, p2 } from "./d05.ts";
+import { readInputFiles, Solution } from "../../tests/index.ts";
 
-import s from "./solution.json" with { type: "json" };
+import s from "../../tests/solution.json" with { type: "json" };
 const solution = s as Solution;
 
 const { example, custom } = readInputFiles("d05");

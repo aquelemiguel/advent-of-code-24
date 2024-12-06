@@ -17,14 +17,14 @@ function readInputFiles(day: string) {
   let custom = "";
   try {
     example = Deno.readTextFileSync(`./solutions/${day}/${day}.example`);
-  } catch (error) {
+  } catch {
     console.warn(
       `Warning: File ${day}.example does not exist. Tests are skipped.`
     );
   }
   try {
     custom = Deno.readTextFileSync(`./solutions/${day}/${day}.in`);
-  } catch (error) {
+  } catch {
     console.warn(`Warning: File ${day}.in does not exist. Tests are skipped.`);
   }
   return { example, custom };
