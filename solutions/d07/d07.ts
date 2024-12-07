@@ -1,4 +1,4 @@
-const opMap: any = {
+const opMap: { [key: string]: (a: number, b: number) => number } = {
   "+": (a: number, b: number) => a + b,
   "*": (a: number, b: number) => a * b,
   "||": (a: number, b: number) => Number(`${a}${b}`),
@@ -14,8 +14,7 @@ function permutate(chars: string[], n: number): string[][] {
   const perms: string[][] = [];
   const generate = (curr: string[] = []) => {
     if (curr.length === n) {
-      perms.push(curr);
-      return;
+      return perms.push(curr);
     }
     for (const char of chars) {
       generate([...curr, char]);
