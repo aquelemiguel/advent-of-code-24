@@ -1,7 +1,8 @@
 import * as _ from "jsr:@es-toolkit/es-toolkit";
+type Point = [number, number];
 
 function parse(input: string) {
-  const antennas: Map<string, [number, number][]> = new Map();
+  const antennas: Map<string, Point[]> = new Map();
   input.split("\n").forEach((row, i) =>
     row.split("").forEach((freq, j) => {
       if (freq !== ".") {
@@ -12,18 +13,18 @@ function parse(input: string) {
   return { antennas, n: input.split("\n").length };
 }
 
-function permutate(points: [number, number][]) {
+function permutate(points: Point[]) {
   return points.flatMap((_, i, arr) =>
     arr.slice(i + 1).map((point) => [points[i], point])
   );
 }
 
-function isInBounds([x, y]: [number, number], n: number) {
+function isInBounds([x, y]: Point, n: number) {
   return !(x < 0 || x >= n || y < 0 || y >= n);
 }
 
 function getAntinodes(
-  [[x1, y1], [x2, y2]]: [number, number][],
+  [[x1, y1], [x2, y2]]: Point[],
   n: number,
   resonance: boolean
 ) {
@@ -32,7 +33,7 @@ function getAntinodes(
   if (resonance) {
     antinodes.push([x1, y1], [x2, y2]);
   }
-  function traverse([x, y]: [number, number], [dx, dy]: [number, number]) {
+  function traverse([x, y]: Point, [dx, dy]: Point) {
     while (isInBounds([x, y], n)) {
       antinodes.push([x, y]);
       if (!resonance) break;
