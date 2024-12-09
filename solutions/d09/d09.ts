@@ -6,50 +6,50 @@ function parse(input: string) {
     );
 }
 
-function checksum(blocks: number[]) {
-  return blocks.reduce((acc, curr, i) => acc + (curr === -1 ? 0 : curr * i), 0);
+function checksum(arr: number[]) {
+  return arr.reduce((acc, curr, i) => acc + (curr === -1 ? 0 : curr * i), 0);
 }
 
-function defrag(blocks: number[]) {
-  for (let j = blocks.length - 1, start = 0; j >= 0; j--) {
-    if (blocks[j] === -1) {
+function defrag(arr: number[]) {
+  for (let j = arr.length - 1, start = 0; j >= 0; j--) {
+    if (arr[j] === -1) {
       continue;
     }
     for (let i = start; i < j; i++) {
-      if (blocks[i] === -1) {
-        [blocks[i], blocks[j]] = [blocks[j], -1];
+      if (arr[i] === -1) {
+        [arr[i], arr[j]] = [arr[j], -1];
         start = i + 1;
         break;
       }
     }
   }
-  return blocks;
+  return arr;
 }
 
-function quickDefrag(blocks: number[]) {
-  for (let j = blocks.length - 1; j >= 0; j--) {
-    if (blocks[j] === -1) {
+function quickDefrag(arr: number[]) {
+  for (let j = arr.length - 1; j >= 0; j--) {
+    if (arr[j] === -1) {
       continue;
     }
-    const current = blocks[j];
-    let blockSize = 1;
-    while (j > 0 && blocks[j - 1] === current) {
-      blockSize++, j--;
+    const current = arr[j];
+    let size = 1;
+    while (j > 0 && arr[j - 1] === current) {
+      size++, j--;
     }
-    for (let i = 0, freeSlots = 0; i < j; i++) {
-      if (blocks[i] === -1 && ++freeSlots === blockSize) {
-        for (let k = 0; k < blockSize; k++) {
-          blocks[i - k] = current;
-          blocks[j + k] = -1;
+    for (let i = 0, free = 0; i < j; i++) {
+      if (arr[i] === -1 && ++free === size) {
+        for (let k = 0; k < size; k++) {
+          arr[i - k] = current;
+          arr[j + k] = -1;
         }
         break;
       }
-      if (blocks[i] !== -1) {
-        freeSlots = 0;
+      if (arr[i] !== -1) {
+        free = 0;
       }
     }
   }
-  return blocks;
+  return arr;
 }
 
 export const p1 = (input: string) => checksum(defrag(parse(input)));
