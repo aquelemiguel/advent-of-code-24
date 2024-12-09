@@ -11,14 +11,14 @@ function checksum(blocks: number[]) {
 }
 
 function defrag(blocks: number[]) {
-  for (let j = blocks.length - 1, startBlock = 0; j >= 0; j--) {
+  for (let j = blocks.length - 1, start = 0; j >= 0; j--) {
     if (blocks[j] === -1) {
       continue;
     }
-    for (let i = startBlock; i < j; i++) {
+    for (let i = start; i < j; i++) {
       if (blocks[i] === -1) {
         [blocks[i], blocks[j]] = [blocks[j], -1];
-        startBlock = i + 1;
+        start = i + 1;
         break;
       }
     }
@@ -31,15 +31,15 @@ function quickDefrag(blocks: number[]) {
     if (blocks[j] === -1) {
       continue;
     }
-    const currentBlock = blocks[j];
+    const current = blocks[j];
     let blockSize = 1;
-    while (j > 0 && blocks[j - 1] === currentBlock) {
+    while (j > 0 && blocks[j - 1] === current) {
       blockSize++, j--;
     }
     for (let i = 0, freeSlots = 0; i < j; i++) {
       if (blocks[i] === -1 && ++freeSlots === blockSize) {
         for (let k = 0; k < blockSize; k++) {
-          blocks[i - k] = currentBlock;
+          blocks[i - k] = current;
           blocks[j + k] = -1;
         }
         break;
