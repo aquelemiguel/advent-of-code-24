@@ -16,13 +16,11 @@ function defrag(blocks: number[]) {
       continue;
     }
     for (let i = startBlock; i < j; i++) {
-      if (blocks[i] !== -1) {
-        continue;
+      if (blocks[i] === -1) {
+        [blocks[i], blocks[j]] = [blocks[j], -1];
+        startBlock = i + 1;
+        break;
       }
-      blocks[i] = blocks[j];
-      blocks[j] = -1;
-      startBlock = i + 1;
-      break;
     }
   }
   return blocks;
