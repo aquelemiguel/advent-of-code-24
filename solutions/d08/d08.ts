@@ -1,4 +1,5 @@
 import * as _ from "jsr:@es-toolkit/es-toolkit";
+
 type Point = [number, number];
 
 function parse(input: string) {
@@ -49,8 +50,9 @@ function solve(input: string, resonance: boolean) {
   const { antennas, n } = parse(input);
   const antinodes = antennas
     .values()
-    .flatMap((points) => permutate(points))
-    .flatMap((perm) => getAntinodes(perm, n, resonance));
+    .flatMap((points) =>
+      permutate(points).flatMap((perm) => getAntinodes(perm, n, resonance))
+    );
   return _.uniqBy([...antinodes], ([x, y]) => `${x},${y}`).length;
 }
 
