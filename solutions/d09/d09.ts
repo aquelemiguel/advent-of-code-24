@@ -31,9 +31,9 @@ function quickDefrag(arr: number[]) {
     if (arr[j] === -1) {
       continue;
     }
-    const current = arr[j];
+    const curr = arr[j];
     let size = 1;
-    while (j > 0 && arr[j - 1] === current) {
+    while (j > 0 && arr[j - 1] === curr) {
       size++, j--;
     }
     for (let i = 0, free = 0; i < j; i++, arr[i] !== -1 && (free = 0)) {
