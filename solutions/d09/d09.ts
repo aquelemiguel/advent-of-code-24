@@ -16,11 +16,12 @@ function defrag(arr: number[]) {
       continue;
     }
     for (let i = start; i < j; i++) {
-      if (arr[i] === -1) {
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-        start = i + 1;
-        break;
+      if (arr[i] !== -1) {
+        continue;
       }
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+      start = i + 1;
+      break;
     }
   }
   return arr;
