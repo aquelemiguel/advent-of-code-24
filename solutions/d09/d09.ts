@@ -17,7 +17,7 @@ function defrag(arr: number[]) {
     }
     for (let i = start; i < j; i++) {
       if (arr[i] === -1) {
-        [arr[i], arr[j]] = [arr[j], -1];
+        [arr[i], arr[j]] = [arr[j], arr[i]];
         start = i + 1;
         break;
       }
@@ -39,8 +39,7 @@ function quickDefrag(arr: number[]) {
     for (let i = 0, free = 0; i < j; i++) {
       if (arr[i] === -1 && ++free === size) {
         for (let k = 0; k < size; k++) {
-          arr[i - k] = current;
-          arr[j + k] = -1;
+          [arr[i - k], arr[j + k]] = [arr[j + k], arr[i - k]];
         }
         break;
       }
