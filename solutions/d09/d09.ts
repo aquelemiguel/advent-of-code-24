@@ -36,15 +36,12 @@ function quickDefrag(arr: number[]) {
     while (j > 0 && arr[j - 1] === current) {
       size++, j--;
     }
-    for (let i = 0, free = 0; i < j; i++) {
+    for (let i = 0, free = 0; i < j; i++, arr[i] !== -1 && (free = 0)) {
       if (arr[i] === -1 && ++free === size) {
         for (let k = 0; k < size; k++) {
           [arr[i - k], arr[j + k]] = [arr[j + k], arr[i - k]];
         }
         break;
-      }
-      if (arr[i] !== -1) {
-        free = 0;
       }
     }
   }
