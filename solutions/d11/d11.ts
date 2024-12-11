@@ -4,10 +4,6 @@ function addToMap(map: Map<number, number>, key: number, count: number) {
   map.set(key, (map.get(key) || 0) + count);
 }
 
-function countMapValues(map: Map<number, number>) {
-  return _.sum([...map.values()]);
-}
-
 function parse(input: string) {
   const map = new Map<number, number>();
   input.split(" ").forEach((n) => addToMap(map, Number(n), 1));
@@ -34,7 +30,7 @@ function blink(stones: Map<number, number>, n: number) {
     }
     stones = newStones;
   }
-  return countMapValues(stones);
+  return _.sum([...stones.values()]);
 }
 
 export const p1 = (input: string) => blink(parse(input), 25);
