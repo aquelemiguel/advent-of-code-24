@@ -1,29 +1,48 @@
 import * as _ from "jsr:@es-toolkit/es-toolkit";
 
-function parse(input: string) {
-  return input.split(" ").map(Number);
+class StoneList<T> {
+  private stones = new Map<T, number>();
+  constructor(stones: T[] = []) {
+    stones.forEach((stone) => this.add(stone, 1));
+  }
+  add(stone: T, count: number): void {
+    this.stones.set(stone, (this.stones.get(stone) || 0) + count);
+  }
+  getAll(): Map<T, number> {
+    return this.stones;
+  }
+  count(): number {
+    return _.sum([...this.stones.values()]);
+  }
 }
 
-function blink(stones: number[], n: number): number {
+function parse(input: string): StoneList<number> {
+  return new StoneList(input.split(" ").map((n) => Number(n)));
+}
+
+function blink(stones: StoneList<number>, n: number): number {
   while (n--) {
-    for (let i = 0; i < stones.length; i++) {
-      if (stones[i] === 0) {
-        stones[i] = 1;
+    const newStones = new StoneList<number>();
+
+    for (const [stone, count] of stones.getAll()) {
+      if (stone === 0) {
+        newStones.add(1, count);
       } else {
-        const str = stones[i].toString();
+        const str = stone.toString();
         if (str.length % 2 === 0) {
           const [left, right] = _.chunk(str.split(""), str.length / 2).map(
             (n: string[]) => Number(n.join(""))
           );
-          stones.splice(i++, 1, ...[left, right]);
+          newStones.add(left, count);
+          newStones.add(right, count);
         } else {
-          stones[i] *= 2024;
+          newStones.add(stone * 2024, count);
         }
       }
     }
-    console.log(n);
+    stones = newStones;
   }
-  return stones.length;
+  return stones.count();
 }
 
 export const p1 = (input: string) => blink(parse(input), 25);
