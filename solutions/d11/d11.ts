@@ -1,10 +1,10 @@
 import * as _ from "jsr:@es-toolkit/es-toolkit";
 
-function addToMap<T>(map: Map<T, number>, key: T, count: number) {
+function addToMap(map: Map<number, number>, key: number, count: number) {
   map.set(key, (map.get(key) || 0) + count);
 }
 
-function countMapValues<T>(map: Map<T, number>) {
+function countMapValues(map: Map<number, number>) {
   return _.sum([...map.values()]);
 }
 
