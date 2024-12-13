@@ -8,12 +8,12 @@ function tokens([a1, a2, b1, b2, c1, c2]: number[]) {
   return Number.isInteger(a) && Number.isInteger(b) ? a * 3 + b : 0;
 }
 
-function solve(machines: number[][], correct: boolean) {
+function solve(machines: number[][], n: number) {
   return machines.reduce((acc, machine) => {
-    [4, 5].forEach((i) => correct && (machine[i] += Math.pow(10, 13)));
+    [machine[4], machine[5]] = [machine[4] + n, machine[5] + n];
     return acc + tokens(machine);
   }, 0);
 }
 
-export const p1 = (input: string): number => solve(parse(input), false);
-export const p2 = (input: string): number => solve(parse(input), true);
+export const p1 = (input: string): number => solve(parse(input), 0);
+export const p2 = (input: string): number => solve(parse(input), Math.pow(10, 13));
