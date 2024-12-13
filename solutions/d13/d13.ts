@@ -4,8 +4,7 @@ function parse(input: string) {
 
 function token([a1, a2, b1, b2, c1, c2]: number[]) {
   const d = a1 * b2 - a2 * b1;
-  const a = (c1 * b2 - c2 * b1) / d;
-  const b = (a1 * c2 - a2 * c1) / d;
+  const [a, b] = [(c1 * b2 - c2 * b1) / d, (a1 * c2 - a2 * c1) / d];
   return Number.isInteger(a) && Number.isInteger(b) ? a * 3 + b : 0;
 }
 
