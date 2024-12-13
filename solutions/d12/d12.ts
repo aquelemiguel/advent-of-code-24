@@ -5,61 +5,41 @@ function parse(input: string) {
 function fence(garden: string[][]) {
   const visited: Set<string> = new Set();
 
-  function countCounters([i, j]: number[], label: string) {
+  function countCorners([i, j]: number[], label: string) {
     let corners = 0;
-    // exterior corners
+    const same = (x: number, y: number) => garden[x]?.[y] === label;
 
-    // top left
-    if (garden[i - 1]?.[j] !== label && garden[i]?.[j - 1] !== label) {
-      corners++;
-    }
-    // top right
-    if (garden[i - 1]?.[j] !== label && garden[i]?.[j + 1] !== label) {
-      corners++;
-    }
-    // bottom left
-    if (garden[i + 1]?.[j] !== label && garden[i]?.[j - 1] !== label) {
-      corners++;
-    }
-    // bottom right
-    if (garden[i + 1]?.[j] !== label && garden[i]?.[j + 1] !== label) {
-      corners++;
-    }
+    // prettier-ignore
+    const exterior = [
+      [[-1, 0], [0, -1]],
+      [[-1, 0], [0, 1]],
+      [[1, 0], [0, -1]],
+      [[1, 0], [0, 1]],
+    ];
+    // prettier-ignore
+    const interior = [
+      [[0, -1], [-1, 0], [-1, -1]],
+      [[0, 1], [-1, 0], [-1, 1]],
+      [[0, -1], [1, 0], [1, -1]],
+      [[0, 1], [1, 0], [1, 1]],
+    ];
 
-    // interior corners
-
-    // top left
-    if (
-      garden[i]?.[j - 1] === label &&
-      garden[i - 1]?.[j] === label &&
-      garden[i - 1]?.[j - 1] !== label
-    ) {
-      corners++;
-    }
-    // top right
-    if (
-      garden[i]?.[j + 1] === label &&
-      garden[i - 1]?.[j] === label &&
-      garden[i - 1]?.[j + 1] !== label
-    ) {
-      corners++;
-    }
-    // bottom left
-    if (
-      garden[i]?.[j - 1] === label &&
-      garden[i + 1]?.[j] === label &&
-      garden[i + 1]?.[j - 1] !== label
-    ) {
-      corners++;
-    }
-    // bottom right
-    if (
-      garden[i]?.[j + 1] === label &&
-      garden[i + 1]?.[j] === label &&
-      garden[i + 1]?.[j + 1] !== label
-    ) {
-      corners++;
-    }
+    exterior.forEach((neighbors) => {
+      const [[ax, ay], [bx, by]] = neighbors;
+      if (!same(i + ax, j + ay) && !same(i + bx, j + by)) {
+        corners++;
+      }
+    });
+    interior.forEach((neighbors) => {
+      const [[ax, ay], [bx, by], [cx, cy]] = neighbors;
+      if (
+        same(i + ax, j + ay) &&
+        same(i + bx, j + by) &&
+        !same(i + cx, j + cy)
+      ) {
+        corners++;
+      }
+    });
     return corners;
   }
 
@@ -72,14 +52,9 @@ function fence(garden: string[][]) {
   ) {
     visited.add(`${i},${j}`);
 
-    const neighbors = [
-      [i - 1, j],
-      [i, j - 1],
-      [i + 1, j],
-      [i, j + 1],
-    ];
-
-    corners += countCounters([i, j], label);
+    // prettier-ignore
+    const neighbors = [[i - 1, j], [i, j - 1], [i + 1, j], [i, j + 1]];
+    corners += countCorners([i, j], label);
 
     neighbors.forEach(([x, y]) => {
       if (garden[x]?.[y] !== label) {
@@ -93,12 +68,10 @@ function fence(garden: string[][]) {
         }
       }
     });
-
     return { perimeter, corners, area };
   }
 
   const regions = [];
-
   for (let i = 0; i < garden.length; i++) {
     for (let j = 0; j < garden[i].length; j++) {
       if (!visited.has(`${i},${j}`)) {
@@ -110,14 +83,15 @@ function fence(garden: string[][]) {
 }
 
 export function p1(input: string) {
-  const regions = fence(parse(input));
-  return regions.reduce(
+  return fence(parse(input)).reduce(
     (acc, { perimeter, area }) => acc + perimeter * area,
     0
   );
 }
 
 export function p2(input: string) {
-  const regions = fence(parse(input));
-  return regions.reduce((acc, { corners, area }) => acc + corners * area, 0);
+  return fence(parse(input)).reduce(
+    (acc, { corners, area }) => acc + corners * area,
+    0
+  );
 }
