@@ -1,5 +1,6 @@
 # advent-of-code-24
 
+<big>
 <pre>
             .-----.          .------------------.
          .--'~ ~ ~|        .-' *       \  /     '-.   <a href="solutions/d01/d01.ts">1 **</a>
@@ -16,3 +17,4 @@
          |  -  -  |        |''':::::|    |  .    .|  <a href="solutions/d12/d12.ts">12 **</a>
          |'. -   -|        |   :::::|    |  .'    |  <a href="solutions/d13/d13.ts">13 **</a>
 </pre>
+</big>
