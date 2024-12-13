@@ -11,8 +11,7 @@ function token([a1, a2, b1, b2, c1, c2]: number[]) {
 
 function solve(machines: number[][], correct: boolean) {
   return machines.reduce((acc, machine) => {
-    machine[4] += correct ? Math.pow(10, 13) : 0;
-    machine[5] += correct ? Math.pow(10, 13) : 0;
+    [4, 5].forEach((i) => correct && (machine[i] += Math.pow(10, 13)));
     return acc + token(machine);
   }, 0);
 }
