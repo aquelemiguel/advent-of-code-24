@@ -15,4 +15,5 @@
          |.......||        |/\ ..'  |    |   . .  |  <a href="solutions/d11/d11.ts">11</a> **
          |  -  -  |        |''':::::|    |  .    .|  <a href="solutions/d12/d12.ts">12</a> **
          |'. -   -|        |   :::::|    |  .'    |  <a href="solutions/d13/d13.ts">13</a> **
+         |...'..''|        |.  :::::|    |..|\..''|  <a href="solutions/d14/d14.ts">14</a> **
 </pre>
